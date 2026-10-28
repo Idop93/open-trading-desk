@@ -41,14 +41,33 @@ families from [`daytrader-agent`](https://github.com/Idop93/daytrader-agent)
 
 ## Run it
 
+Clone it and `cd` into it first — every command below assumes your shell
+is sitting inside the `open-trading-desk/` directory:
+
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
+git clone https://github.com/Idop93/open-trading-desk.git
+cd open-trading-desk
+```
+
+Then set up a virtualenv and install dependencies:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+```
 
-# optional — without this, the claude-reasoner-01 provider falls back to a
-# deterministic rule instead of calling the Claude API
-cp .env.example .env   # fill in ANTHROPIC_API_KEY if you want the live LLM provider
+Optional: copy `.env.example` to `.env` and add `ANTHROPIC_API_KEY` if you
+want the `claude-reasoner-01` provider to call the real Claude API instead
+of its deterministic fallback.
 
+```bash
+cp .env.example .env
+```
+
+Then run the demo:
+
+```bash
 PYTHONPATH=src python3 -m opentradingdesk.pm_agent
 ```
 
