@@ -18,7 +18,7 @@ from .exchange import Exchange
 
 DATA_DIR = Path(os.environ.get("OTD_DATA_DIR", Path(__file__).resolve().parents[2] / "data"))
 
-mcp = FastMCP("open-trading-desk")
+mcp = FastMCP("open-trading-desk", log_level="WARNING")
 _exchange = Exchange(DATA_DIR)
 
 

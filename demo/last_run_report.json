@@ -58,9 +58,9 @@
         "horizon_minutes": 30,
         "confidence": 0.566,
         "rationale": "15-min MA (177.77) is 0.16% above 60-min MA (177.48) \u2014 bullish crossover.",
-        "timestamp": "2026-10-28T08:43:19.480725+00:00"
+        "timestamp": "2026-10-28T13:44:05.556581+00:00"
       },
-      "log_hash": "97cf527135f35c35e6e3cc37c436d245c5aa1abe358e6adb2d3a8065540ec053"
+      "log_hash": "c79df9b516a42e5c7aaf2a2ce694c5fb424ee90807e937856611390e59f891a9"
     }
   },
   {
@@ -79,9 +79,9 @@
         "horizon_minutes": 30,
         "confidence": 0.713,
         "rationale": "synthetic headline/social sentiment score +0.53 \u2014 net bullish buzz.",
-        "timestamp": "2026-10-28T08:43:19.481815+00:00"
+        "timestamp": "2026-10-28T13:44:05.557663+00:00"
       },
-      "log_hash": "59ccbf661e36ec4151d5d4a5ee47c16666a1dee23bf3ae876cfc001dfdcd6c85"
+      "log_hash": "c51bbc02028938d51642eb9ef511e6ec43eb7f471e454bd97fbc77b3a816cf1b"
     }
   },
   {
@@ -100,9 +100,9 @@
         "horizon_minutes": 30,
         "confidence": 0.55,
         "rationale": "[no ANTHROPIC_API_KEY \u2014 deterministic fallback] price 177.80 vs 20-min avg 177.72 (-0.04%); mean-reversion rule.",
-        "timestamp": "2026-10-28T08:43:19.482878+00:00"
+        "timestamp": "2026-10-28T13:44:05.558579+00:00"
       },
-      "log_hash": "e1ee0e5a89810435f8e4850a03418bf93be9db658f57898b3e257028dbce8409"
+      "log_hash": "d92d27e6d89c84093b692ab213f9a0de0c32e95aa99fe39b9b6d05e711f949cf"
     }
   },
   {
@@ -166,7 +166,7 @@
           "reason": "within limits",
           "rule_triggered": null,
           "fill_price": 177.8,
-          "created_at": 1793176999.483914
+          "created_at": 1793195045.5594418
         },
         {
           "id": 2,
@@ -178,7 +178,7 @@
           "reason": "25.0% exceeds max position 10.0%",
           "rule_triggered": "POSITION_LIMIT_EXCEEDED",
           "fill_price": null,
-          "created_at": 1793176999.485034
+          "created_at": 1793195045.560243
         },
         {
           "id": 3,
@@ -190,7 +190,7 @@
           "reason": "delegation is long-only",
           "rule_triggered": "SHORT_NOT_ALLOWED",
           "fill_price": null,
-          "created_at": 1793176999.4859378
+          "created_at": 1793195045.560999
         }
       ],
       "scores": [
@@ -229,7 +229,7 @@
         }
       ],
       "chain_verified": true,
-      "chain_message": "chain verified, 45 entries, latest_hash=60a36e47b4629eb43099646a0b4c8a2953546bb1a0943587136df7d84c610f13"
+      "chain_message": "chain verified, 45 entries, latest_hash=b50a277b48c6149dfbf13b6de05cebeb5670a5d3838a462352f5a90c8aee08f5"
     }
   }
 ]
