@@ -1,0 +1,106 @@
+{
+  "A": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.92,
+      "sd": 0.06
+    },
+    "pick_test_acc": {
+      "mean": 0.876,
+      "sd": 0.061
+    },
+    "random_test_acc": {
+      "mean": 0.671,
+      "sd": 0.024
+    },
+    "fixed_test_acc": {
+      "mean": 0.501,
+      "sd": 0.072
+    },
+    "best_test_acc": {
+      "mean": 0.899,
+      "sd": 0.041
+    },
+    "gamer_ranked_first_rate": 0.0,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p80": 25,
+      "skill-p60": 5
+    },
+    "seconds_per_run": {
+      "mean": 0.067,
+      "sd": 0.011
+    },
+    "model_calls": 0
+  },
+  "B": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.92,
+      "sd": 0.06
+    },
+    "pick_test_acc": {
+      "mean": 0.876,
+      "sd": 0.061
+    },
+    "random_test_acc": {
+      "mean": 0.628,
+      "sd": 0.018
+    },
+    "fixed_test_acc": {
+      "mean": 0.501,
+      "sd": 0.072
+    },
+    "best_test_acc": {
+      "mean": 0.899,
+      "sd": 0.041
+    },
+    "gamer_ranked_first_rate": 0.0,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p80": 25,
+      "skill-p60": 5
+    },
+    "seconds_per_run": {
+      "mean": 0.083,
+      "sd": 0.006
+    },
+    "model_calls": 0
+  },
+  "C": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.703,
+      "sd": 0.283
+    },
+    "pick_test_acc": {
+      "mean": 0.756,
+      "sd": 0.179
+    },
+    "random_test_acc": {
+      "mean": 0.636,
+      "sd": 0.058
+    },
+    "fixed_test_acc": {
+      "mean": 0.522,
+      "sd": 0.194
+    },
+    "best_test_acc": {
+      "mean": 0.95,
+      "sd": 0.089
+    },
+    "gamer_ranked_first_rate": 0.0,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p20": 4,
+      "skill-p40": 6,
+      "skill-p60": 11,
+      "skill-p80": 9
+    },
+    "seconds_per_run": {
+      "mean": 0.015,
+      "sd": 0.001
+    },
+    "model_calls": 0
+  }
+}

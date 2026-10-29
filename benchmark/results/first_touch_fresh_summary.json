@@ -1,0 +1,113 @@
+{
+  "A": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.713,
+      "sd": 0.359
+    },
+    "pick_test_acc": {
+      "mean": 0.84,
+      "sd": 0.102
+    },
+    "random_test_acc": {
+      "mean": 0.669,
+      "sd": 0.028
+    },
+    "fixed_test_acc": {
+      "mean": 0.481,
+      "sd": 0.079
+    },
+    "best_test_acc": {
+      "mean": 0.906,
+      "sd": 0.04
+    },
+    "gamer_ranked_first_rate": 0.0,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p60": 7,
+      "skill-p80": 18,
+      "skill-p20": 2,
+      "skill-p40": 3
+    },
+    "seconds_per_run": {
+      "mean": 0.065,
+      "sd": 0.008
+    },
+    "model_calls": 0
+  },
+  "B": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.713,
+      "sd": 0.359
+    },
+    "pick_test_acc": {
+      "mean": 0.685,
+      "sd": 0.215
+    },
+    "random_test_acc": {
+      "mean": 0.627,
+      "sd": 0.021
+    },
+    "fixed_test_acc": {
+      "mean": 0.481,
+      "sd": 0.079
+    },
+    "best_test_acc": {
+      "mean": 0.906,
+      "sd": 0.04
+    },
+    "gamer_ranked_first_rate": 0.467,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p60": 5,
+      "lazy-avoid": 14,
+      "skill-p80": 10,
+      "skill-p40": 1
+    },
+    "seconds_per_run": {
+      "mean": 0.094,
+      "sd": 0.011
+    },
+    "model_calls": 0
+  },
+  "C": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.512,
+      "sd": 0.385
+    },
+    "pick_test_acc": {
+      "mean": 0.694,
+      "sd": 0.219
+    },
+    "random_test_acc": {
+      "mean": 0.611,
+      "sd": 0.044
+    },
+    "fixed_test_acc": {
+      "mean": 0.467,
+      "sd": 0.202
+    },
+    "best_test_acc": {
+      "mean": 0.944,
+      "sd": 0.08
+    },
+    "gamer_ranked_first_rate": 0.133,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p60": 5,
+      "skill-p20": 8,
+      "skill-p40": 7,
+      "skill-p80": 4,
+      "lazy-avoid": 4,
+      "technical-momentum-01": 1,
+      "skill-p00": 1
+    },
+    "seconds_per_run": {
+      "mean": 0.017,
+      "sd": 0.001
+    },
+    "model_calls": 0
+  }
+}

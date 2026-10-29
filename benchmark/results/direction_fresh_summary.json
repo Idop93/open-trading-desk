@@ -1,0 +1,111 @@
+{
+  "A": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.953,
+      "sd": 0.071
+    },
+    "pick_test_acc": {
+      "mean": 0.885,
+      "sd": 0.058
+    },
+    "random_test_acc": {
+      "mean": 0.669,
+      "sd": 0.028
+    },
+    "fixed_test_acc": {
+      "mean": 0.481,
+      "sd": 0.079
+    },
+    "best_test_acc": {
+      "mean": 0.906,
+      "sd": 0.04
+    },
+    "gamer_ranked_first_rate": 0.0,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p80": 26,
+      "skill-p60": 3,
+      "skill-p40": 1
+    },
+    "seconds_per_run": {
+      "mean": 0.081,
+      "sd": 0.027
+    },
+    "model_calls": 0
+  },
+  "B": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.953,
+      "sd": 0.071
+    },
+    "pick_test_acc": {
+      "mean": 0.885,
+      "sd": 0.058
+    },
+    "random_test_acc": {
+      "mean": 0.627,
+      "sd": 0.021
+    },
+    "fixed_test_acc": {
+      "mean": 0.481,
+      "sd": 0.079
+    },
+    "best_test_acc": {
+      "mean": 0.906,
+      "sd": 0.04
+    },
+    "gamer_ranked_first_rate": 0.0,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p80": 26,
+      "skill-p60": 3,
+      "skill-p40": 1
+    },
+    "seconds_per_run": {
+      "mean": 0.096,
+      "sd": 0.007
+    },
+    "model_calls": 0
+  },
+  "C": {
+    "runs": 30,
+    "spearman": {
+      "mean": 0.708,
+      "sd": 0.226
+    },
+    "pick_test_acc": {
+      "mean": 0.728,
+      "sd": 0.229
+    },
+    "random_test_acc": {
+      "mean": 0.611,
+      "sd": 0.044
+    },
+    "fixed_test_acc": {
+      "mean": 0.467,
+      "sd": 0.202
+    },
+    "best_test_acc": {
+      "mean": 0.944,
+      "sd": 0.08
+    },
+    "gamer_ranked_first_rate": 0.033,
+    "chains_verified": 30,
+    "picks": {
+      "skill-p60": 8,
+      "skill-p80": 11,
+      "skill-p20": 4,
+      "skill-p40": 4,
+      "technical-momentum-01": 1,
+      "liar-long": 1,
+      "skill-p00": 1
+    },
+    "seconds_per_run": {
+      "mean": 0.014,
+      "sd": 0.001
+    },
+    "model_calls": 0
+  }
+}
