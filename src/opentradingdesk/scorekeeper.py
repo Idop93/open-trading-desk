@@ -82,8 +82,32 @@ def _outcome(view_payload: dict, market: SyntheticMarket, session_minute: int) -
     return "expired"
 
 
+def _direction_outcome(view_payload: dict, market: SyntheticMarket, session_minute: int) -> str:
+    """'hit' | 'miss' — did the price move the way the view said over its horizon?
+
+    Same rule for LONG and AVOID, and every view is decided (none dropped as expired), so a
+    provider with no skill scores about 50% whatever direction it always picks. Prices come from
+    the market at the request minute, not from the provider's stated entry, so a provider cannot
+    improve its score by misreporting entry. Added after the HW7 benchmark showed the first-touch
+    rule ranking an always-AVOID provider first in half of the runs.
+    """
+    ticker = view_payload["ticker"]
+    start = market.price_at(ticker, session_minute)
+    end = market.price_at(ticker, session_minute + view_payload["horizon_minutes"])
+    went_up = end > start
+    correct = went_up if view_payload["direction"] == "long" else not went_up
+    return "hit" if correct else "miss"
+
+
+OUTCOME_RULES = {"first_touch": _outcome, "direction": _direction_outcome}
+
+
 class Scorekeeper:
-    def __init__(self, db_path: str | Path, view_log: ViewLog, market: SyntheticMarket):
+    def __init__(self, db_path: str | Path, view_log: ViewLog, market: SyntheticMarket,
+                 outcome_rule: str = "first_touch"):
+        if outcome_rule not in OUTCOME_RULES:
+            raise ValueError(f"unknown outcome_rule {outcome_rule!r}; choose from {sorted(OUTCOME_RULES)}")
+        self._outcome = OUTCOME_RULES[outcome_rule]
         self._conn = sqlite3.connect(db_path)
         self._conn.row_factory = sqlite3.Row
         self._conn.executescript(SCHEMA)
@@ -106,7 +130,7 @@ class Scorekeeper:
                 continue
 
             tallies[provider_id]["n_views"] += 1
-            outcome = _outcome(payload, self._market, row["session_minute"])
+            outcome = self._outcome(payload, self._market, row["session_minute"])
             if outcome == "hit":
                 tallies[provider_id]["hits"] += 1
             elif outcome == "miss":

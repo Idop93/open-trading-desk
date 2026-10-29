@@ -193,3 +193,30 @@ def test_scorekeeper_scores_hit_miss_and_expired_correctly(tmp_path):
     assert records["B"].misses == 1 and records["B"].hit_rate == 0.0
     assert records["C"].expired == 1 and records["C"].n_views == 1 and records["C"].hits == 0 and records["C"].misses == 0
     assert records["D"].no_shows == 1 and records["D"].n_views == 0
+
+
+def test_direction_rule_does_not_reward_an_always_avoid_provider(tmp_path):
+    """HW7 finding: under first_touch an always-AVOID provider scores near 100% on a random walk.
+    Under the direction rule it must land near 50%, like any provider with no skill."""
+    from opentradingdesk.market_data import SyntheticMarket
+    from opentradingdesk.schemas import View
+    from opentradingdesk.scorekeeper import Scorekeeper
+    from opentradingdesk.view_log import ViewLog
+
+    rates = {}
+    for rule in ("first_touch", "direction"):
+        hits = total = 0
+        for seed in range(20):
+            market = SyntheticMarket(["AAA"], seed=seed)
+            log = ViewLog(tmp_path / f"{rule}{seed}.db")
+            for minute in range(60, 360, 20):
+                price = market.price_at("AAA", minute)
+                log.log_view(View(provider_id="lazy", ticker="AAA", direction="avoid", entry=price,
+                                  stop=round(price * 0.995, 2), target=round(price * 1.01, 2), horizon_minutes=30,
+                                  confidence=0.6, rationale="always avoid"), minute)
+            rec = Scorekeeper(tmp_path / f"s{rule}{seed}.db", log, market, outcome_rule=rule).score_all(390)[0]
+            hits += rec.hits
+            total += rec.hits + rec.misses
+        rates[rule] = hits / total
+    assert rates["first_touch"] > 0.8          # the leniency the benchmark found
+    assert abs(rates["direction"] - 0.5) < 0.1  # no skill, no reward
