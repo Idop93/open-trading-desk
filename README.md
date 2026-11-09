@@ -24,20 +24,63 @@ that:
   delegation token with hard limits. Every order is approved or refused
   with a machine-readable reason.
 
-All four PM-facing operations (`find_providers`, `request_view`,
-`get_scores`, `place_order`) are exposed as **MCP tools** — this is the
-actual interoperability surface, not a mocked-up API. A real MCP client
+The four PM-facing operations (`find_providers`, `request_view`,
+`get_scores`, `place_order`) are exposed as **MCP tools**, together with
+three owner/session tools (`issue_delegation`, `revoke_delegation`,
+`close_day`) — seven in all. This is the actual interoperability surface,
+not a mocked-up API. A real MCP client
 (`pm_agent.py`, but it could just as easily be Claude Desktop or a
 classmate's agent) talks to a real MCP server (`server.py`) as a separate
 subprocess, exactly like it would over the network in production.
 
-## This is the HW6 MVP
+## Status
 
-Milestone: registry + view log + Risk Gate + 3 providers, running for one
-simulated trading day. Two providers are rule-based ports of the signal
-families from [`daytrader-agent`](https://github.com/Idop93/daytrader-agent)
-(technical momentum, headline/social sentiment); the third is a Claude-backed
+| Milestone | What it added | Where |
+|---|---|---|
+| HW6 — MVP | Registry, view log, Risk Gate, Scorekeeper and 3 providers, running for one simulated trading day over MCP | this repo (`src/`, `tests/`) |
+| HW7 — Benchmark | Pre-registered test of whether the Scorekeeper can tell skill from luck; led to the opt-in `direction` scoring rule | [`benchmark/`](benchmark/) |
+| HW8 — Nanda Town | End-to-end compatibility check of this MCP server inside the [Nanda Town](https://github.com/projnanda/nandatown) sandbox, including a lost-order-confirmation failure case | [projnanda/nandatown#322](https://github.com/projnanda/nandatown/pull/322) |
+
+Two providers are rule-based ports of the signal families from
+[`daytrader-agent`](https://github.com/Idop93/daytrader-agent) (technical
+momentum, headline/social sentiment); the third is a Claude-backed
 "outside provider" stand-in representing an agent run by someone else.
+
+### HW7 benchmark: can the Scorekeeper tell skill from luck?
+
+Providers of known skill (plus an always-AVOID and an always-confident-LONG
+"gamer") were scored on a training day; a PM then followed the top-scored
+provider on a new test day. Plan, cases and success checks were written
+before any run ([`benchmark/PLAN.md`](benchmark/PLAN.md)). Results on fresh
+seeds (30 runs per case):
+
+| Case | Rule | Rank correlation with true skill | PM pick accuracy (vs. random) | Gamer ranked first |
+|---|---|---|---|---|
+| A, ordinary | `first_touch` (default) | 0.71 | 84% (67%) | 0% |
+| B, with gamers | `first_touch` (default) | 0.71 | 69% (63%) | 47% |
+| A, ordinary | `direction` | 0.95 | 89% (67%) | 0% |
+| B, with gamers | `direction` | 0.95 | 89% (63%) | 0% |
+
+The default `first_touch` rule is lenient on AVOID views, so an always-AVOID
+provider could top the ranking. The `direction` rule (opt-in:
+`Scorekeeper(..., outcome_rule="direction")`) fixes that. Full results and
+the small-sample case are in [`benchmark/results/`](benchmark/results/);
+reproduce with the commands in [`benchmark/README.md`](benchmark/README.md).
+
+### HW8: Nanda Town integration
+
+The Nanda Town integration code lives in the Nanda Town repository, not
+here: [`examples/integrations/open-trading-desk/`](https://github.com/guykatzsedric/nandatown/tree/integration/open-trading-desk/examples/integrations/open-trading-desk)
+in PR [projnanda/nandatown#322](https://github.com/projnanda/nandatown/pull/322).
+It drives this server, pinned at commit `7c9fc6b`, over a live MCP stdio
+session through one simulated trading day (delegation, provider discovery,
+45 views, one approved order, refused oversized/short/revoked orders,
+close-of-day scoring and hash-chain check). A second scenario drops the
+first order confirmation: the PM retries, the Risk Gate refuses the retry
+with `DUPLICATE_POSITION`, and there is exactly one fill. Both pass. The
+check also exposed a gap: `place_order` has no client order id and there is
+no order-status tool, so a PM cannot learn a lost order's outcome before
+`close_day`. Follow that PR's README to reproduce.
 
 ## Run it
 
@@ -138,14 +181,14 @@ walk), so the scoring math is verified independently of the demo.
   interface but run inside the exchange process rather than being polled
   over the network. The interface (`providers/base.py`) is designed so an
   outside provider can be swapped in without touching the registry, view
-  log, or Scorekeeper — that's next (HW7: live day with outside
-  providers).
+  log, or Scorekeeper. A live day with a classmate's outside provider has
+  not been run yet.
 - **One synthetic day, not a multi-day track record.** A real decision
   about "is this provider actually skilled" needs more than one day's
   sample — the Scorekeeper's confidence intervals in the demo output are
-  intentionally wide for exactly this reason. The replay evaluation at
-  scale (20–100 synthetic providers of known skill, 3 years of bars) is
-  HW8, not this MVP.
+  intentionally wide for exactly this reason. The HW7 benchmark tests
+  ranking on synthetic providers of known skill over a training day and a
+  test day; the full replay over 3 years of real bars has not been run.
 
 ## Project structure
 
@@ -159,7 +202,7 @@ src/opentradingdesk/
   risk_gate.py          # the only path to the (simulated) broker
   scorekeeper.py         # scores logged views against what actually happened
   exchange.py             # wires the above together; used by both server.py and the tests
-  server.py                # MCP server — exposes find_providers/request_view/get_scores/place_order
+  server.py                # MCP server — exposes the seven MCP tools
   pm_agent.py               # MCP client — the PM agent that drives the demo
   providers/
     base.py                  # Provider interface (card() + answer_view())
@@ -168,13 +211,15 @@ src/opentradingdesk/
     claude_analyst.py           # Claude-backed provider, with offline fallback
 tests/test_exchange.py          # registry, hash chain, delegation, risk gate, scorekeeper
 demo/last_run_report.json        # transcript from the last `pm_agent.py` run
+benchmark/                       # HW7 skill-vs-luck benchmark: plan, runner, results
 ```
 
 ## Roadmap
 
 | Milestone | Date | Scope |
 |---|---|---|
-| HW6 (this repo) | Oct 28 | Registry, view log, Risk Gate, 3 providers, one simulated day |
-| HW7 | Nov 4 | Live paper trading day with a real outside provider (classmate's agent) |
-| HW8 | Nov 11 | Replay evaluation at scale (synthetic providers of known skill, 3 years of bars) |
+| HW6 | Oct 28 | Done: registry, view log, Risk Gate, 3 providers, one simulated day |
+| HW7 | Nov 4 | Done: Scorekeeper skill-vs-luck benchmark and the `direction` rule |
+| HW8 | Nov 11 | Done: Nanda Town integration and lost-confirmation test ([projnanda/nandatown#322](https://github.com/projnanda/nandatown/pull/322)) |
 | HW9 | Nov 18 | Open-source repo polish and docs |
+| Next | — | Client order id or order-status tool (gap found in HW8); outside provider agents; replay over real bars |
